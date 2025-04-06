@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import myapplication.android.musicplayerapp.ui.mvi.LceState
 import myapplication.android.musicplayerapp.ui.mvi.MviBaseViewModel
-import myapplication.android.musicplayerapp.ui.screen.playlist.mvi.PlaylistEffect
-import myapplication.android.musicplayerapp.ui.screen.playlist.mvi.PlaylistIntent
-import myapplication.android.musicplayerapp.ui.screen.playlist.mvi.PlaylistLocalDI
-import myapplication.android.musicplayerapp.ui.screen.playlist.mvi.PlaylistPartialState
-import myapplication.android.musicplayerapp.ui.screen.playlist.mvi.PlaylistState
-import myapplication.android.musicplayerapp.ui.screen.playlist.mvi.PlaylistStore
+import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistEffect
+import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistIntent
+import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistLocalDI
+import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistPartialState
+import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistState
+import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistStore
 import javax.inject.Inject
 
 

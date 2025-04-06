@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.playlist.mvi
+package myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi
 
 import myapplication.android.musicplayerapp.data.repository.playlist.PlaylistRepository
 import myapplication.android.musicplayerapp.data.repository.tracks.TracksRepository

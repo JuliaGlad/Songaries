@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.playlist.mvi
+package myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

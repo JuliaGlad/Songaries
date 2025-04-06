@@ -33,8 +33,8 @@ import myapplication.android.musicplayerapp.ui.composable.PlaylistItem
 import myapplication.android.musicplayerapp.ui.mvi.LceState
 import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUi
 import myapplication.android.musicplayerapp.ui.screen.playlist.main_playlists.di.LocalPlaylist
-import myapplication.android.musicplayerapp.ui.screen.playlist.mvi.PlaylistEffect
-import myapplication.android.musicplayerapp.ui.screen.playlist.mvi.PlaylistState
+import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistEffect
+import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistState
 import myapplication.android.musicplayerapp.ui.theme.DarkGrey
 import myapplication.android.musicplayerapp.ui.theme.MainGrey
 import myapplication.android.musicplayerapp.ui.theme.Purple
