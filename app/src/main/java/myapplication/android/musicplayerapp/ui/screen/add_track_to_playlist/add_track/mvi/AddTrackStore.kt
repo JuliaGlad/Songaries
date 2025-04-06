@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.add_track.mvi
+package myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi
 
 import myapplication.android.musicplayerapp.ui.mvi.LceState
 import myapplication.android.musicplayerapp.ui.mvi.MviStore

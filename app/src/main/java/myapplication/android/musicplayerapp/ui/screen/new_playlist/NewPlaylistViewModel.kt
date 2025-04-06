@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.playlist.new_playlist
+package myapplication.android.musicplayerapp.ui.screen.new_playlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.add_track
+package myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,16 +11,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import myapplication.android.musicplayerapp.ui.mvi.LceState
 import myapplication.android.musicplayerapp.ui.mvi.MviBaseViewModel
-import myapplication.android.musicplayerapp.ui.screen.add_track.mvi.AddTrackEffect
-import myapplication.android.musicplayerapp.ui.screen.add_track.mvi.AddTrackIntent
-import myapplication.android.musicplayerapp.ui.screen.add_track.mvi.AddTrackLocalDI
-import myapplication.android.musicplayerapp.ui.screen.add_track.mvi.AddTrackPartialState
-import myapplication.android.musicplayerapp.ui.screen.add_track.mvi.AddTrackState
-import myapplication.android.musicplayerapp.ui.screen.add_track.mvi.AddTrackStore
+import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi.AddTrackEffect
+import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi.AddTrackIntent
+import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi.AddTrackLocalDI
+import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi.AddTrackPartialState
+import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi.AddTrackState
+import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi.AddTrackStore
 import javax.inject.Inject
 
 @HiltViewModel
-class AddTrackViewModel @Inject constructor(
+class AddTrackToPlaylistViewModel @Inject constructor(
     localDI: AddTrackLocalDI
 ): MviBaseViewModel<
         AddTrackPartialState,

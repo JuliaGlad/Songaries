@@ -26,13 +26,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import myapplication.android.musicplayerapp.R
+import myapplication.android.musicplayerapp.ui.composable.AddPlaylistItem
 import myapplication.android.musicplayerapp.ui.composable.EmptyListItem
 import myapplication.android.musicplayerapp.ui.composable.ErrorScreen
 import myapplication.android.musicplayerapp.ui.composable.LoadingScreen
 import myapplication.android.musicplayerapp.ui.composable.PlaylistItem
 import myapplication.android.musicplayerapp.ui.mvi.LceState
 import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUi
-import myapplication.android.musicplayerapp.ui.screen.playlist.main_playlists.di.LocalPlaylist
+import myapplication.android.musicplayerapp.ui.local_composition.LocalPlaylist
 import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistEffect
 import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.mvi.PlaylistState
 import myapplication.android.musicplayerapp.ui.theme.DarkGrey
@@ -87,51 +88,6 @@ fun PlaylistScreen(onShowBottomSheet: () -> Unit) {
 
             LceState.Loading -> LoadingScreen()
         }
-    }
-}
-
-@Composable
-fun AddPlaylistItem(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 8.dp
-            )
-            .padding(
-                top = 20.dp,
-                bottom = 8.dp
-            )
-            .clickable { onClick.invoke() },
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Card(
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Icon(
-                modifier = Modifier
-                    .background(color = DarkGrey)
-                    .size(
-                        width = 80.dp,
-                        height = 80.dp
-                    )
-                    .padding(20.dp),
-                painter = painterResource(R.drawable.ic_add_playlist),
-                contentDescription = stringResource(R.string.create_playlist),
-                tint = Purple
-            )
-        }
-
-        Text(
-            modifier = Modifier.padding(start = 14.dp),
-            text = stringResource(R.string.create_playlist),
-            style = MaterialTheme.typography.bodyLarge,
-            color = Purple
-        )
     }
 }
 

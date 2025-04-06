@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.playlist.main_playlists
+package myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,28 +17,37 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import myapplication.android.musicplayerapp.ui.local_composition.LocalPlaylist
+import myapplication.android.musicplayerapp.ui.navigation.screen.PlaylistsScreen
+import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.AddTrackToPlaylistScreen
 import myapplication.android.musicplayerapp.ui.screen.new_playlist.NewPlaylistScreen
-import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.PlaylistScreen
 import myapplication.android.musicplayerapp.ui.theme.MainGrey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainPlaylistScreen(onBottomBarVisible: () -> Unit) {
-    onBottomBarVisible()
-    val viewmodel: MainPlaylistViewModel = hiltViewModel()
+fun MainAddTrackScreen(
+    navController: NavController,
+    trackId: String?,
+    onBottomBarVisible: () -> Unit
+) {
+    val viewModel: MainAddTrackViewModel = hiltViewModel()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
 
-    val playlists = viewmodel.playlistsState
+    val playlists = viewModel.playlistState
 
     CompositionLocalProvider(
         LocalPlaylist provides playlists
     ) {
-        PlaylistScreen(onShowBottomSheet = { showBottomSheet = true })
-        if (showBottomSheet) {
+        AddTrackToPlaylistScreen(
+            trackId,
+            navigateBack = { navController.popBackStack() },
+            openAddPlaylist = { showBottomSheet = true }
+        ) { onBottomBarVisible() }
+        if (showBottomSheet){
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet = false },
                 sheetState = sheetState,
@@ -57,11 +66,12 @@ fun MainPlaylistScreen(onBottomBarVisible: () -> Unit) {
                     onAddPlaylist = { playlists.add(it) },
                     onDismiss = {
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if (!sheetState.isVisible) {
+                            if (!sheetState.isVisible){
                                 showBottomSheet = false
                             }
                         }
-                    })
+                    }
+                )
             }
         }
     }

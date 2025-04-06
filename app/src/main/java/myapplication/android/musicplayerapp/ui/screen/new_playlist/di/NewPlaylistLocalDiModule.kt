@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.add_track.di
+package myapplication.android.musicplayerapp.ui.screen.new_playlist.di
 
 import dagger.Module
 import dagger.Provides
@@ -6,16 +6,16 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import myapplication.android.musicplayerapp.data.repository.playlist.PlaylistRepository
-import myapplication.android.musicplayerapp.ui.screen.add_track.mvi.AddTrackLocalDI
+import myapplication.android.musicplayerapp.domain.usecases.playlist.AddPlaylistUseCase
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class AddTrackDiModule {
+class NewPlaylistLocalDiModule {
 
     @ViewModelScoped
     @Provides
-    fun provideAddTrackLocalDI(
-        repository: PlaylistRepository
-    ): AddTrackLocalDI = AddTrackLocalDI(repository)
+    fun provideAddPlaylistUseCase(
+        playlistRepository: PlaylistRepository
+    ): AddPlaylistUseCase = AddPlaylistUseCase(playlistRepository)
 
 }

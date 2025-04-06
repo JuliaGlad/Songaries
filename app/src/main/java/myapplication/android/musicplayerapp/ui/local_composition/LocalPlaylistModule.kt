@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.playlist.main_playlists.di
+package myapplication.android.musicplayerapp.ui.local_composition
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -9,12 +9,13 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUi
 
+
 @Module
 @InstallIn(ViewModelComponent::class)
-class MainPlaylistModule {
+class LocalPlaylistModule {
 
-    @Provides
     @ViewModelScoped
-    fun provideLocalPlaylist(): SnapshotStateList<PlaylistUi> = mutableStateListOf()
+    @Provides
+    fun provideLocalPlaylists(): SnapshotStateList<PlaylistUi> = mutableStateListOf()
 
 }

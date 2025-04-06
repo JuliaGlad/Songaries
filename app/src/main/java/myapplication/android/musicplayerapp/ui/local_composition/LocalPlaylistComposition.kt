@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.playlist.main_playlists.di
+package myapplication.android.musicplayerapp.ui.local_composition
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateListOf

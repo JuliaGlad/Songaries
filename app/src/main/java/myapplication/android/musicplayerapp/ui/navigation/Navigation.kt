@@ -12,7 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import myapplication.android.musicplayerapp.ui.navigation.screen.BottomScreen
 import myapplication.android.musicplayerapp.ui.navigation.screen.PlaylistsScreen
-import myapplication.android.musicplayerapp.ui.screen.add_track.AddTrackScreen
+import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.main.MainAddTrackScreen
 import myapplication.android.musicplayerapp.ui.screen.artists.ArtistsScreen
 import myapplication.android.musicplayerapp.ui.screen.general.GeneralScreen
 import myapplication.android.musicplayerapp.ui.screen.playlist.main_playlists.MainPlaylistScreen
@@ -43,7 +43,7 @@ fun Navigation(
                 navArgument(TRACK_ID) { type = NavType.StringType }
             )
         ) { entry ->
-            AddTrackScreen(
+            MainAddTrackScreen (
                 navController = navController,
                 trackId = entry.arguments?.getString(TRACK_ID)
             ) { viewmodel.setBottomBarVisibility(false) }
