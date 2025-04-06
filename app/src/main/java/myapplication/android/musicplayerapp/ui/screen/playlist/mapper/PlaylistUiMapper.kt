@@ -2,8 +2,8 @@ package myapplication.android.musicplayerapp.ui.screen.playlist.mapper
 
 import myapplication.android.musicplayerapp.domain.models.PlaylistDomain
 import myapplication.android.musicplayerapp.domain.models.PlaylistsDomainList
-import myapplication.android.musicplayerapp.ui.screen.playlist.model.PlaylistUi
-import myapplication.android.musicplayerapp.ui.screen.playlist.model.PlaylistUiList
+import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUi
+import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUiList
 import java.util.stream.Collectors
 
 fun PlaylistsDomainList.toUi() =

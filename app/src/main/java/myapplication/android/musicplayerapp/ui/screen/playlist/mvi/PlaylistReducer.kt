@@ -2,8 +2,7 @@ package myapplication.android.musicplayerapp.ui.screen.playlist.mvi
 
 import myapplication.android.musicplayerapp.ui.mvi.LceState
 import myapplication.android.musicplayerapp.ui.mvi.MviReducer
-import myapplication.android.musicplayerapp.ui.screen.playlist.model.PlaylistUi
-import myapplication.android.musicplayerapp.ui.screen.playlist.model.PlaylistUiList
+import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUiList
 
 class PlaylistReducer: MviReducer<
         PlaylistPartialState,

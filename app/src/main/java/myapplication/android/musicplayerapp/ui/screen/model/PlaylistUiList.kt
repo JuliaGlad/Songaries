@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.playlist.model
+package myapplication.android.musicplayerapp.ui.screen.model
 
 class PlaylistUiList(
     val playlists: List<PlaylistUi>

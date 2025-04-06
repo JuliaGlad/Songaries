@@ -1,4 +1,4 @@
-package myapplication.android.musicplayerapp.ui.screen.playlist
+package myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

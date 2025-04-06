@@ -6,14 +6,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import myapplication.android.musicplayerapp.ui.navigation.screen.BottomScreen
 import myapplication.android.musicplayerapp.ui.navigation.screen.PlaylistsScreen
+import myapplication.android.musicplayerapp.ui.screen.add_track.AddTrackScreen
 import myapplication.android.musicplayerapp.ui.screen.artists.ArtistsScreen
 import myapplication.android.musicplayerapp.ui.screen.general.GeneralScreen
-import myapplication.android.musicplayerapp.ui.screen.playlist.PlaylistScreen
-import myapplication.android.musicplayerapp.ui.screen.playlist.new_playlist.NewPlaylistScreen
+import myapplication.android.musicplayerapp.ui.screen.playlist.main_playlists.MainPlaylistScreen
 
 @Composable
 fun Navigation(
@@ -27,16 +29,24 @@ fun Navigation(
         modifier = Modifier.padding(paddings)
     ) {
         composable(route = BottomScreen.GeneralScreen.route) {
-            GeneralScreen { viewmodel.setBottomBarVisibility(true) }
+            GeneralScreen(navController) { viewmodel.setBottomBarVisibility(true) }
         }
         composable(route = BottomScreen.ArtistsScreen.route) {
             ArtistsScreen { viewmodel.setBottomBarVisibility(true) }
         }
-        composable(route = BottomScreen.PlaylistsScreen.route) {
-            PlaylistScreen(navController){ viewmodel.setBottomBarVisibility(true) }
+        composable(route = BottomScreen.MainPlaylistScreen.route) {
+            MainPlaylistScreen { viewmodel.setBottomBarVisibility(true) }
         }
-        composable(route = PlaylistsScreen.NewPlaylistScreen.route) {
-            NewPlaylistScreen{ viewmodel.setBottomBarVisibility(false) }
+        composable(
+            route = PlaylistsScreen.AddTrackScreen.route + "/{$TRACK_ID}",
+            arguments = listOf(
+                navArgument(TRACK_ID) { type = NavType.StringType }
+            )
+        ) { entry ->
+            AddTrackScreen(
+                navController = navController,
+                trackId = entry.arguments?.getString(TRACK_ID)
+            ) { viewmodel.setBottomBarVisibility(false) }
         }
     }
 }
@@ -47,3 +57,5 @@ fun withArgs(route: String, vararg args: String): String {
         args.forEach { append("/$it") }
     }
 }
+
+const val TRACK_ID = "track_id"

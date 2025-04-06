@@ -44,11 +44,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
@@ -60,6 +58,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import kotlinx.coroutines.FlowPreview
@@ -71,6 +70,8 @@ import myapplication.android.musicplayerapp.R
 import myapplication.android.musicplayerapp.ui.composable.ErrorScreen
 import myapplication.android.musicplayerapp.ui.composable.LoadingScreen
 import myapplication.android.musicplayerapp.ui.mvi.LceState
+import myapplication.android.musicplayerapp.ui.navigation.screen.PlaylistsScreen
+import myapplication.android.musicplayerapp.ui.navigation.withArgs
 import myapplication.android.musicplayerapp.ui.screen.general.mvi.GeneralEffect
 import myapplication.android.musicplayerapp.ui.screen.general.mvi.GeneralIntent
 import myapplication.android.musicplayerapp.ui.screen.general.mvi.GeneralState
@@ -83,13 +84,16 @@ import myapplication.android.musicplayerapp.ui.theme.White
 import kotlin.random.Random
 
 @Composable
-fun GeneralScreen(onBottomBarVisible: () -> Unit) {
+fun GeneralScreen(
+    navController: NavController,
+    onBottomBarVisible: () -> Unit
+) {
     onBottomBarVisible()
     val viewModel: GeneralScreenViewModel = hiltViewModel()
     val state: GeneralState = viewModel.uiState.collectAsState().value
     val listItems: MutableList<TrackUiModel> = remember { mutableStateListOf() }
 
-    CollectEffect(viewModel)
+    CollectEffect(viewModel, navController)
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -114,7 +118,8 @@ fun SetUI(
                 ImageCard()
                 MusicListCard(
                     tracks = listItems,
-                    onClick = { viewModel.sendEffect(GeneralEffect.StartTrack) },
+                    playTrack = { viewModel.sendEffect(GeneralEffect.StartTrack) },
+                    addTrack = { viewModel.sendEffect(GeneralEffect.NavigateToAddTrack(it)) },
                     getNewItems = { viewModel.sendIntent(GeneralIntent.LoadTracks) }
                 )
             }
@@ -191,7 +196,8 @@ fun MusicListCard(
     modifier: Modifier = Modifier,
     tracks: MutableList<TrackUiModel>,
     getNewItems: () -> Unit,
-    onClick: () -> Unit
+    playTrack: () -> Unit,
+    addTrack: (String) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -241,7 +247,8 @@ fun MusicListCard(
                             title = title,
                             artist = artist,
                             uri = image,
-                            onClick = { onClick.invoke() }
+                            playTrack = { playTrack.invoke() },
+                            addTrack = { addTrack.invoke(trackId) }
                         )
                     }
                 }
@@ -269,7 +276,8 @@ fun TrackItem(
     title: String,
     artist: String,
     uri: String,
-    onClick: () -> Unit
+    playTrack: () -> Unit,
+    addTrack: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -278,7 +286,7 @@ fun TrackItem(
                 vertical = 8.dp,
                 horizontal = 20.dp
             )
-            .clickable { onClick.invoke() },
+            .clickable { playTrack.invoke() },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -307,7 +315,9 @@ fun TrackItem(
             }
         }
         Icon(
-            painter = painterResource(R.drawable.ic_details),
+            modifier = Modifier
+                .clickable { addTrack.invoke() },
+            painter = painterResource(R.drawable.ic_add),
             contentDescription = "Details",
             tint = LightGrey
         )
@@ -375,12 +385,23 @@ fun AnimatedMusicVisualizer(height: Dp = 400.dp) {
 }
 
 @Composable
-private fun CollectEffect(viewModel: GeneralScreenViewModel) {
+private fun CollectEffect(
+    viewModel: GeneralScreenViewModel,
+    navController: NavController
+) {
     LaunchedEffect(key1 = Unit) {
         viewModel.effects.collect { effect ->
             when (effect) {
                 GeneralEffect.StartTrack ->
                     Log.i("Track is playing", "playing")
+
+                is GeneralEffect.NavigateToAddTrack ->
+                    navController.navigate(
+                        route = withArgs(
+                            route = PlaylistsScreen.AddTrackScreen.route,
+                            effect.trackId
+                        )
+                    )
             }
         }
     }

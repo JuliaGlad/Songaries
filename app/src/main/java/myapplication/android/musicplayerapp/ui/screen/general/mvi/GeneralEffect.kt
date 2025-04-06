@@ -6,4 +6,5 @@ sealed interface GeneralEffect: MviEffect {
 
     data object StartTrack: GeneralEffect
 
+    class NavigateToAddTrack(val trackId: String): GeneralEffect
 }

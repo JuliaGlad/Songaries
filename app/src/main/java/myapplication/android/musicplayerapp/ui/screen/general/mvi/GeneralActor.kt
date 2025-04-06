@@ -5,12 +5,12 @@ import kotlinx.coroutines.flow.flow
 import myapplication.android.musicplayerapp.domain.usecases.tracks.GetTracksUseCase
 import myapplication.android.musicplayerapp.ui.main.asyncAwait
 import myapplication.android.musicplayerapp.ui.main.runCatchingNonCancellation
-import myapplication.android.musicplayerapp.ui.screen.mapper.toUi
 import myapplication.android.musicplayerapp.ui.mvi.MviActor
+import myapplication.android.musicplayerapp.ui.screen.mapper.toUi
 
 class GeneralActor(
     private val getTracksUseCase: GetTracksUseCase
-): MviActor<
+) : MviActor<
         GeneralPartialState,
         GeneralIntent,
         GeneralState,
@@ -20,9 +20,10 @@ class GeneralActor(
         intent: GeneralIntent,
         state: GeneralState
     ): Flow<GeneralPartialState> =
-        when(intent){
+        when (intent) {
             GeneralIntent.LoadTracks -> loadTracks(state.offset)
         }
+
 
     private fun loadTracks(offset: Int) =
         flow {
@@ -33,11 +34,10 @@ class GeneralActor(
                     emit(GeneralPartialState.DataLoaded(data))
                 },
                 onFailure = { throwable ->
-                   emit(GeneralPartialState.Error(throwable))
+                    emit(GeneralPartialState.Error(throwable))
                 }
             )
         }
-
 
     private suspend fun getTracks(offset: Int) =
         runCatchingNonCancellation {

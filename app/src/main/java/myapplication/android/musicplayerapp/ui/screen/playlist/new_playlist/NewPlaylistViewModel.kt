@@ -13,13 +13,13 @@ import javax.inject.Inject
 @HiltViewModel
 class NewPlaylistViewModel @Inject constructor(
     private val addPlaylistUseCase: AddPlaylistUseCase
-): ViewModel(){
+) : ViewModel() {
 
-    private val _isAdded : MutableSharedFlow<Boolean> = MutableSharedFlow()
-    private val isAdded = _isAdded.asSharedFlow()
+    private val _isAdded: MutableSharedFlow<Boolean> = MutableSharedFlow(replay = 1)
+    val isAdded = _isAdded.asSharedFlow()
 
-    private val _onError : MutableSharedFlow<Throwable> = MutableSharedFlow()
-    private val onError = _onError.asSharedFlow()
+    private val _onError: MutableSharedFlow<Throwable?> = MutableSharedFlow(replay = 1)
+    val onError = _onError.asSharedFlow()
 
     init {
         _isAdded.tryEmit(false)
@@ -29,11 +29,13 @@ class NewPlaylistViewModel @Inject constructor(
         title: String,
         description: String = "",
         image: String = ""
-    ){
+    ) {
         kotlin.runCatching {
             addPlaylist(title, description, image)
         }.fold(
-            onSuccess = { _isAdded.tryEmit(true) },
+            onSuccess = {
+                _isAdded.tryEmit(true)
+            },
             onFailure = { _onError.tryEmit(it) }
         )
     }
@@ -43,13 +45,13 @@ class NewPlaylistViewModel @Inject constructor(
         description: String,
         image: String
     ) = runCatchingNonCancellation {
-            viewModelScope.launch {
-                addPlaylistUseCase.invoke(
-                    title = title,
-                    image = image,
-                    description = description
-                )
-            }
-        }.getOrThrow()
+        viewModelScope.launch {
+            addPlaylistUseCase.invoke(
+                title = title,
+                image = image,
+                description = description
+            )
+        }
+    }.getOrThrow()
 
 }
