@@ -1,16 +1,17 @@
 package myapplication.android.musicplayerapp.data.database.provider
 
 import myapplication.android.musicplayerapp.App.Companion.app
+import myapplication.android.musicplayerapp.data.api.models.Track
 import myapplication.android.musicplayerapp.data.database.entities.PlaylistEntity
 
 class PlaylistsProvider {
 
-    fun addNewTrack(title: String, id: Int){
+    fun addNewTrack(title: String, track: Track){
         val dao = app.database.playlistDao()
         val data = dao.getPlaylists()
         for (i in data){
             if (i.title == title){
-                i.tracks.add(id)
+                i.tracks.add(track)
                 dao.updatePlaylist(i)
                 break
             }
@@ -22,10 +23,12 @@ class PlaylistsProvider {
         val data = dao.getPlaylists()
         for (i in data){
             if (i.title == title){
-                if (i.tracks.contains(id)){
-                    i.tracks.remove(id)
-                    dao.updatePlaylist(i)
-                    break
+                for (track in i.tracks){
+                    if (track.id == id.toString()){
+                        i.tracks.remove(track)
+                        dao.updatePlaylist(i)
+                        break
+                    }
                 }
             }
         }
@@ -39,7 +42,7 @@ class PlaylistsProvider {
         title: String,
         image: String,
         description: String,
-        tracks: MutableList<Int>
+        tracks: MutableList<Track>
     ) {
         app.database.playlistDao().insertPlaylist(
             PlaylistEntity(

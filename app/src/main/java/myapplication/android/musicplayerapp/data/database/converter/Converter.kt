@@ -3,6 +3,7 @@ package myapplication.android.musicplayerapp.data.database.converter
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import myapplication.android.musicplayerapp.data.api.models.Track
 
 
 abstract class ListConverter<T>(
@@ -20,4 +21,4 @@ abstract class ListConverter<T>(
     }
 }
 
-class IntegerListConverter : ListConverter<Int>(object : TypeToken<MutableList<Int>>(){})
+class IntegerListConverter : ListConverter<Track>(object : TypeToken<MutableList<Track>>(){})

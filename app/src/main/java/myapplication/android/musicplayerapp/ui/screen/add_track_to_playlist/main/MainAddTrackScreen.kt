@@ -20,16 +20,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import myapplication.android.musicplayerapp.ui.local_composition.LocalPlaylist
-import myapplication.android.musicplayerapp.ui.navigation.screen.PlaylistsScreen
+import myapplication.android.musicplayerapp.ui.navigation.screen.BottomScreen
 import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.AddTrackToPlaylistScreen
+import myapplication.android.musicplayerapp.ui.screen.model.TrackUiModel
 import myapplication.android.musicplayerapp.ui.screen.new_playlist.NewPlaylistScreen
 import myapplication.android.musicplayerapp.ui.theme.MainGrey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainAddTrackScreen(
+    track: TrackUiModel?,
     navController: NavController,
-    trackId: String?,
     onBottomBarVisible: () -> Unit
 ) {
     val viewModel: MainAddTrackViewModel = hiltViewModel()
@@ -42,11 +43,13 @@ fun MainAddTrackScreen(
     CompositionLocalProvider(
         LocalPlaylist provides playlists
     ) {
-        AddTrackToPlaylistScreen(
-            trackId,
-            navigateBack = { navController.popBackStack() },
-            openAddPlaylist = { showBottomSheet = true }
-        ) { onBottomBarVisible() }
+        track?.let {
+            AddTrackToPlaylistScreen(
+                track = it,
+                navigateBack = { navController.popBackStack() },
+                openAddPlaylist = { showBottomSheet = true }
+            ) { onBottomBarVisible() }
+        }
         if (showBottomSheet){
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet = false },

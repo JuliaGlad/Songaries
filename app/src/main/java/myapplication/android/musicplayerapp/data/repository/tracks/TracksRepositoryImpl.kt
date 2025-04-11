@@ -1,5 +1,6 @@
 package myapplication.android.musicplayerapp.data.repository.tracks
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import myapplication.android.musicplayerapp.data.mapper.toDto
@@ -28,10 +29,11 @@ class TracksRepositoryImpl @Inject constructor(
         return result.toDto()
     }
 
-    override suspend fun getTracksByIds(offset: Int, ids: List<Int>): TrackDtoList {
+    override suspend fun getTracksByIds(ids: List<Int>): TrackDtoList {
         val remote = withContext(Dispatchers.IO) {
             remoteSource.getTracksByIds(ids)
         }
+        Log.i("Remote size", remote.items.size.toString())
         return remote.toDto()
     }
 

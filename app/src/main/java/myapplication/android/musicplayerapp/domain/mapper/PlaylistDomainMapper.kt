@@ -18,5 +18,5 @@ fun PlaylistDto.toDomain() =
         title = title,
         image = image,
         description = description,
-        tracks = tracks
+        tracks = tracks.toDomain()
     )

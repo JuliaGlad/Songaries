@@ -1,5 +1,6 @@
 package myapplication.android.musicplayerapp.data.mapper
 
+import myapplication.android.musicplayerapp.data.api.models.TracksList
 import myapplication.android.musicplayerapp.data.database.entities.PlaylistEntity
 import myapplication.android.musicplayerapp.data.repository.dto.PlaylistDto
 import myapplication.android.musicplayerapp.data.repository.dto.PlaylistDtoList
@@ -17,5 +18,5 @@ fun PlaylistEntity.toDto() =
         title = title,
         image = image,
         description = description,
-        tracks = tracks
+        tracks = TracksList(tracks).toDto()
     )

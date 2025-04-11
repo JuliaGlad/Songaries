@@ -2,6 +2,7 @@ package myapplication.android.musicplayerapp.ui.screen.playlist.mapper
 
 import myapplication.android.musicplayerapp.domain.models.PlaylistDomain
 import myapplication.android.musicplayerapp.domain.models.PlaylistsDomainList
+import myapplication.android.musicplayerapp.ui.screen.mapper.toUi
 import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUi
 import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUiList
 import java.util.stream.Collectors
@@ -18,5 +19,5 @@ fun PlaylistDomain.toUi() =
         title = title,
         image = image,
         description = description,
-        tracks = tracks
+        tracks = tracks.toUi()
     )

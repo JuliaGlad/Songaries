@@ -7,12 +7,13 @@ import myapplication.android.musicplayerapp.domain.usecases.playlist.GetPlaylist
 import myapplication.android.musicplayerapp.ui.main.asyncAwait
 import myapplication.android.musicplayerapp.ui.main.runCatchingNonCancellation
 import myapplication.android.musicplayerapp.ui.mvi.MviActor
+import myapplication.android.musicplayerapp.ui.screen.model.TrackUiModel
 import myapplication.android.musicplayerapp.ui.screen.playlist.mapper.toUi
 
 class AddTrackActor(
     private val getPlaylistsUseCase: GetPlaylistsUseCase,
     private val addTrackToPlaylistUseCase: AddTrackToPlaylistUseCase
-): MviActor<
+) : MviActor<
         AddTrackPartialState,
         AddTrackIntent,
         AddTrackState,
@@ -21,11 +22,12 @@ class AddTrackActor(
         intent: AddTrackIntent,
         state: AddTrackState
     ): Flow<AddTrackPartialState> =
-        when(intent){
+        when (intent) {
             is AddTrackIntent.AddTrack -> addTrack(
                 intent.playlistTitle,
-                intent.id.toInt()
+                intent.track
             )
+
             AddTrackIntent.GetPlaylists -> loadPlaylists()
         }
 
@@ -52,10 +54,22 @@ class AddTrackActor(
             }
         }.getOrThrow()
 
-    private fun addTrack(playlist: String, trackId: Int) =
-        flow {
+    private fun addTrack(
+        playlistTitle: String,
+        track: TrackUiModel
+    ) = flow {
             kotlin.runCatching {
-                addTrackToPlaylistUseCase.invoke(playlist, trackId)
+                with(track) {
+                    addTrackToPlaylistUseCase.invoke(
+                        playlistTitle,
+                        trackId,
+                        title,
+                        image,
+                        audioUri,
+                        artistId,
+                        artist
+                    )
+                }
             }.fold(
                 onSuccess = { emit(AddTrackPartialState.TrackAdded) },
                 onFailure = { throwable ->

@@ -6,7 +6,7 @@ interface TracksRepository {
 
     suspend fun getTracks(offset: Int): TrackDtoList
 
-    suspend fun getTracksByIds(offset: Int, ids: List<Int>): TrackDtoList
+    suspend fun getTracksByIds( ids: List<Int>): TrackDtoList
 
     suspend fun getTracksByQuery(query: String, offset: Int): TrackDtoList
 

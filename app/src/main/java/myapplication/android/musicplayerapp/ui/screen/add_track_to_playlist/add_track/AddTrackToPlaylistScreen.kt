@@ -14,8 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,12 +31,13 @@ import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_
 import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi.AddTrackIntent
 import myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi.AddTrackState
 import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUi
+import myapplication.android.musicplayerapp.ui.screen.model.TrackUiModel
 import myapplication.android.musicplayerapp.ui.theme.LightGrey
 import myapplication.android.musicplayerapp.ui.theme.MainGrey
 
 @Composable
 fun AddTrackToPlaylistScreen(
-    trackId: String?,
+    track: TrackUiModel,
     navigateBack: () -> Unit,
     openAddPlaylist: () -> Unit,
     onBottomBarVisible: () -> Unit
@@ -68,7 +67,9 @@ fun AddTrackToPlaylistScreen(
                             viewModel.sendEffect(AddTrackEffect.OpenAddPlaylistScreen)
                         }
                         else {
-                            listItems.addAll(data.playlists)
+                            LaunchedEffect(key1 = true) {
+                                listItems.addAll(data.playlists)
+                            }
                             Column(
                                 modifier = Modifier.fillMaxSize()
                             ) {
@@ -102,7 +103,7 @@ fun AddTrackToPlaylistScreen(
                                                 viewModel.sendIntent(
                                                     AddTrackIntent.AddTrack(
                                                         title,
-                                                        trackId!!
+                                                        track
                                                     )
                                                 )
                                             }

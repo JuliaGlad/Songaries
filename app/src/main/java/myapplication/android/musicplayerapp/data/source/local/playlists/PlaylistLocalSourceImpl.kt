@@ -1,5 +1,6 @@
 package myapplication.android.musicplayerapp.data.source.local.playlists
 
+import myapplication.android.musicplayerapp.data.api.models.Track
 import myapplication.android.musicplayerapp.data.database.provider.PlaylistsProvider
 import myapplication.android.musicplayerapp.data.mapper.toDto
 import myapplication.android.musicplayerapp.data.repository.dto.PlaylistDtoList
@@ -14,8 +15,16 @@ class PlaylistLocalSourceImpl @Inject constructor(): PlaylistLocalSource {
         } else null
     }
 
-    override fun addNewTrack(title: String, id: Int) {
-        PlaylistsProvider().addNewTrack(title, id)
+    override fun addNewTrack(
+        playlistTitle: String,
+        id: String,
+        title: String,
+        image: String,
+        audio: String,
+        artistsId: String,
+        artist: String
+    ) {
+        PlaylistsProvider().addNewTrack(playlistTitle, Track(id, title, image, audio, artistsId, artist))
     }
 
     override fun deleteTrack(title: String, id: Int) {
@@ -26,7 +35,7 @@ class PlaylistLocalSourceImpl @Inject constructor(): PlaylistLocalSource {
         title: String,
         image: String,
         description: String,
-        tracks: MutableList<Int>
+        tracks: MutableList<Track>
     ) {
        PlaylistsProvider().insertPlaylist(title, image, description, tracks)
     }

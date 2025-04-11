@@ -48,6 +48,7 @@ import myapplication.android.musicplayerapp.R
 import myapplication.android.musicplayerapp.ui.composable.CustomOutlineTextField
 import myapplication.android.musicplayerapp.ui.composable.ErrorScreen
 import myapplication.android.musicplayerapp.ui.screen.model.PlaylistUi
+import myapplication.android.musicplayerapp.ui.screen.model.TrackUiList
 import myapplication.android.musicplayerapp.ui.theme.DarkGrey
 import myapplication.android.musicplayerapp.ui.theme.DarkerGrey
 import myapplication.android.musicplayerapp.ui.theme.LightGrey
@@ -78,7 +79,7 @@ fun NewPlaylistScreen(
                 title = titleFieldState,
                 image = image,
                 description = descriptionFieldState,
-                tracks = emptyList()
+                tracks = TrackUiList(emptyList())
             )
         )
         onDismiss.invoke()

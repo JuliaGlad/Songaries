@@ -1,9 +1,8 @@
 package myapplication.android.musicplayerapp.ui.navigation.screen
 
 sealed class PlaylistsScreen(val route: String) {
-    data object NewPlaylistScreen: PlaylistsScreen(NEW_PLAYLIST)
-    data object ArtistsScreen: PlaylistsScreen(PLAYLIST_DETAILS)
     data object AddTrackScreen: PlaylistsScreen(ADD_TRACK)
+    data object PlaylistDetailsScreen: PlaylistsScreen(PLAYLIST_DETAILS)
 
     companion object{
         private const val ADD_TRACK = "add_track"

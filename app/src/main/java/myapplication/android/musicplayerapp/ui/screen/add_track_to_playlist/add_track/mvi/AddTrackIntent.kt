@@ -1,6 +1,7 @@
 package myapplication.android.musicplayerapp.ui.screen.add_track_to_playlist.add_track.mvi
 
 import myapplication.android.musicplayerapp.ui.mvi.MviIntent
+import myapplication.android.musicplayerapp.ui.screen.model.TrackUiModel
 
 sealed interface AddTrackIntent: MviIntent {
 
@@ -8,6 +9,6 @@ sealed interface AddTrackIntent: MviIntent {
 
     class AddTrack(
         val playlistTitle: String,
-        val id: String
+        val track: TrackUiModel
     ): AddTrackIntent
 }

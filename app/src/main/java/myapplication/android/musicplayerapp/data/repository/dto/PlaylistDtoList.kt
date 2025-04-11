@@ -8,5 +8,5 @@ class PlaylistDto(
     val title: String,
     val image: String,
     val description: String,
-    val tracks: List<Int>
+    val tracks: TrackDtoList
 )

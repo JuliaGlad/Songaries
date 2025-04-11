@@ -6,7 +6,15 @@ interface PlaylistRepository {
 
     suspend fun getPlaylists(): PlaylistDtoList
 
-    suspend fun addTracksToPlaylist(playlistTitle: String, trackId: Int)
+    suspend fun addTracksToPlaylist(
+        playlistTitle: String,
+        id: String,
+        title: String,
+        image: String,
+        audio: String,
+        artistsId: String,
+        artist: String
+    )
 
     suspend fun deleteTrackFromPlaylist(playlistTitle: String, trackId: Int)
 

@@ -13,8 +13,16 @@ class PlaylistRepositoryImpl @Inject constructor(
         return local ?: PlaylistDtoList(emptyList())
     }
 
-    override suspend fun addTracksToPlaylist(playlistTitle: String, trackId: Int) {
-        localSource.addNewTrack(playlistTitle, trackId)
+    override suspend fun addTracksToPlaylist(
+        playlistTitle: String,
+        id: String,
+        title: String,
+        image: String,
+        audio: String,
+        artistsId: String,
+        artist: String
+    ) {
+        localSource.addNewTrack(playlistTitle, id, title, image, audio, artistsId, artist)
     }
 
     override suspend fun deleteTrackFromPlaylist(playlistTitle: String, trackId: Int) {

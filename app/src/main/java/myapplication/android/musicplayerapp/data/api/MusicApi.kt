@@ -8,8 +8,8 @@ import retrofit2.http.Query
 
 interface MusicApi {
 
-    @GET("tracks")
-    suspend fun getTracksByIds(@Query("id") ids: List<Int>, @Query("order") order: String = ORDER_DEFAULT): TracksList
+    @GET("tracks?id=1214935&id=1932670")
+    suspend fun getTracksByIds(@Query("order") order: String = ORDER_DEFAULT): TracksList
 
     @GET("tracks")
     suspend fun getTracks(@Query("offset") offset: Int,  @Query("order") order: String = ORDER_DEFAULT): TracksList

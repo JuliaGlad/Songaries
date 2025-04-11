@@ -8,6 +8,6 @@ import javax.inject.Inject
 class GetTracksByIdsUseCase @Inject constructor(
     private val repository: TracksRepository
 ) {
-    suspend fun invoke(offset: Int, ids: List<Int>): TracksDomainList =
-        repository.getTracksByIds(offset, ids).toDomain()
+    suspend fun invoke(ids: List<Int>): TracksDomainList =
+        repository.getTracksByIds(ids).toDomain()
 }

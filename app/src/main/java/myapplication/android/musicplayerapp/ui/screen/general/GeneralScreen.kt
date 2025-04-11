@@ -1,5 +1,6 @@
 package myapplication.android.musicplayerapp.ui.screen.general
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -12,7 +13,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -30,7 +29,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +41,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
@@ -59,8 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import com.google.gson.Gson
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -69,6 +65,7 @@ import kotlinx.coroutines.launch
 import myapplication.android.musicplayerapp.R
 import myapplication.android.musicplayerapp.ui.composable.ErrorScreen
 import myapplication.android.musicplayerapp.ui.composable.LoadingScreen
+import myapplication.android.musicplayerapp.ui.composable.TrackItem
 import myapplication.android.musicplayerapp.ui.mvi.LceState
 import myapplication.android.musicplayerapp.ui.navigation.screen.PlaylistsScreen
 import myapplication.android.musicplayerapp.ui.navigation.withArgs
@@ -76,7 +73,6 @@ import myapplication.android.musicplayerapp.ui.screen.general.mvi.GeneralEffect
 import myapplication.android.musicplayerapp.ui.screen.general.mvi.GeneralIntent
 import myapplication.android.musicplayerapp.ui.screen.general.mvi.GeneralState
 import myapplication.android.musicplayerapp.ui.screen.model.TrackUiModel
-import myapplication.android.musicplayerapp.ui.theme.LightGrey
 import myapplication.android.musicplayerapp.ui.theme.MainGrey
 import myapplication.android.musicplayerapp.ui.theme.Purple
 import myapplication.android.musicplayerapp.ui.theme.PurpleDark
@@ -119,7 +115,9 @@ fun SetUI(
                 MusicListCard(
                     tracks = listItems,
                     playTrack = { viewModel.sendEffect(GeneralEffect.StartTrack) },
-                    addTrack = { viewModel.sendEffect(GeneralEffect.NavigateToAddTrack(it)) },
+                    addTrack = { track ->
+                        viewModel.sendEffect(GeneralEffect.NavigateToAddTrack(track))
+                    },
                     getNewItems = { viewModel.sendIntent(GeneralIntent.LoadTracks) }
                 )
             }
@@ -197,7 +195,7 @@ fun MusicListCard(
     tracks: MutableList<TrackUiModel>,
     getNewItems: () -> Unit,
     playTrack: () -> Unit,
-    addTrack: (String) -> Unit
+    addTrack: (TrackUiModel) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -247,8 +245,11 @@ fun MusicListCard(
                             title = title,
                             artist = artist,
                             uri = image,
+                            icon = R.drawable.ic_add,
                             playTrack = { playTrack.invoke() },
-                            addTrack = { addTrack.invoke(trackId) }
+                            iconAction = {
+                                addTrack.invoke(tracks[index])
+                            }
                         )
                     }
                 }
@@ -267,60 +268,6 @@ fun MusicListCard(
                 }
             }
         }
-    }
-}
-
-@OptIn(ExperimentalCoilApi::class)
-@Composable
-fun TrackItem(
-    title: String,
-    artist: String,
-    uri: String,
-    playTrack: () -> Unit,
-    addTrack: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                vertical = 8.dp,
-                horizontal = 20.dp
-            )
-            .clickable { playTrack.invoke() },
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row {
-            Image(
-                modifier = Modifier
-                    .height(50.dp)
-                    .width(50.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop,
-                painter = rememberImagePainter(uri),
-                contentDescription = uri
-            )
-            Column(
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = artist,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = LightGrey
-                )
-            }
-        }
-        Icon(
-            modifier = Modifier
-                .clickable { addTrack.invoke() },
-            painter = painterResource(R.drawable.ic_add),
-            contentDescription = "Details",
-            tint = LightGrey
-        )
     }
 }
 
@@ -399,7 +346,7 @@ private fun CollectEffect(
                     navController.navigate(
                         route = withArgs(
                             route = PlaylistsScreen.AddTrackScreen.route,
-                            effect.trackId
+                            Uri.encode(Gson().toJson(effect.track))
                         )
                     )
             }
@@ -407,7 +354,7 @@ private fun CollectEffect(
     }
 }
 
-fun lerp(color1: Color, color2: Color, factor: Float): Color {
+private fun lerp(color1: Color, color2: Color, factor: Float): Color {
     val red = (color1.red * (1 - factor) + color2.red * factor).coerceIn(0f, 1f)
     val green = (color1.green * (1 - factor) + color2.green * factor).coerceIn(0f, 1f)
     val blue = (color1.blue * (1 - factor) + color2.blue * factor).coerceIn(0f, 1f)

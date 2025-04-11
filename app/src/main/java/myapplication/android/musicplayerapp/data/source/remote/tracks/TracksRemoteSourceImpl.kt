@@ -12,7 +12,7 @@ class TracksRemoteSourceImpl @Inject constructor(
         api.getTracks(offset)
 
     override suspend fun getTracksByIds(ids: List<Int>): TracksList =
-        api.getTracksByIds(ids)
+        api.getTracksByIds()
 
     override suspend fun getTracksByQuery(query: String): TracksList =
         api.getTracksByQuery(query)

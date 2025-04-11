@@ -1,5 +1,6 @@
 package myapplication.android.musicplayerapp.ui.screen.playlist.main_playlists
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,15 +18,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import myapplication.android.musicplayerapp.ui.local_composition.LocalPlaylist
+import myapplication.android.musicplayerapp.ui.navigation.screen.PlaylistsScreen
+import myapplication.android.musicplayerapp.ui.navigation.withArgs
 import myapplication.android.musicplayerapp.ui.screen.new_playlist.NewPlaylistScreen
 import myapplication.android.musicplayerapp.ui.screen.playlist.playlist_list.PlaylistScreen
 import myapplication.android.musicplayerapp.ui.theme.MainGrey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainPlaylistScreen(onBottomBarVisible: () -> Unit) {
+fun MainPlaylistScreen(navController: NavController, onBottomBarVisible: () -> Unit) {
     onBottomBarVisible()
     val viewmodel: MainPlaylistViewModel = hiltViewModel()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -37,7 +42,17 @@ fun MainPlaylistScreen(onBottomBarVisible: () -> Unit) {
     CompositionLocalProvider(
         LocalPlaylist provides playlists
     ) {
-        PlaylistScreen(onShowBottomSheet = { showBottomSheet = true })
+        PlaylistScreen(
+            openPlaylistDetailsScreen = { title, ids ->
+                navController.navigate(
+                    withArgs(
+                        route = PlaylistsScreen.PlaylistDetailsScreen.route,
+                           title, Uri.encode(Gson().toJson(ids))
+                    )
+                )
+            },
+            onShowBottomSheet = { showBottomSheet = true }
+        )
         if (showBottomSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet = false },
